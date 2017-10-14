@@ -3,8 +3,8 @@
 Little python command-line tool to check a given product stock in some walmart stores.
 
 ## Installation
-*Install python if it is not already on your system.
-*Install requests package (http://docs.python-requests.org/en/master/user/install/#install)
+* Install python if it is not already on your system.
+* Install requests package (http://docs.python-requests.org/en/master/user/install/#install)
 
 ## Usage
 walmart_inventory_lookup.py [-h] --upc UPC [--sku SKU] [--item_id ITEM_ID] --stores STORES [STORES ...]
