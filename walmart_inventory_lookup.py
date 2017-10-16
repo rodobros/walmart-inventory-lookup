@@ -5,7 +5,7 @@ import threading
 import time
 import datetime
 
-MAX_QUERY_FREQUENCY = 5 #one query every 5 minute maximum. We don't want to start DDOSing Walmart...
+MIN_QUERY_FREQUENCY = 5 #one query every 5 minute maximum. We don't want to start DDOSing Walmart...
 
 def beep():
 	try:
@@ -45,8 +45,8 @@ def run_inventory_lookup(stores_id, item_id, sku, upc):
 	alert_stock(json.loads(r.text), item_id)
 
 def run_inventory_lookup_multiple_time(stores_id, item_id, sku, upc, frequency):
-	if frequency < MAX_QUERY_FREQUENCY:
-		frequency = MAX_QUERY_FREQUENCY
+	if frequency < MIN_QUERY_FREQUENCY:
+		frequency = MIN_QUERY_FREQUENCY
 	run_inventory_lookup(stores_id, item_id, sku, upc)
 	t = threading.Timer(frequency*60, run_inventory_lookup_multiple_time, [stores_id, item_id, sku, upc, frequency])
 	t.daemon=True
