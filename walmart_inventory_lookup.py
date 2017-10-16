@@ -67,4 +67,4 @@ if args.repeat == 0:
 else:
 	run_inventory_lookup_multiple_time(args.stores, args.item_id, args.sku, args.upc, args.repeat)
 	while True:
-		time.sleep(1)
+		pass
