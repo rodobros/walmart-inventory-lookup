@@ -26,4 +26,4 @@ arguments:
 * SNES mini classic inventory lookup using a file
   * python walmart_inventory_lookup.py --sku 6000197536050 --item_id 6000197536049 --upc 4549659075 --stores @stores.txt
 * SNES mini classic inventory lookup which will be repeated every 10 minutes
- * python walmart_inventory_lookup.py --sku 6000197536050 --item_id 6000197536049 --upc 4549659075 --stores @stores.txt --repeat 10
+  * python walmart_inventory_lookup.py --sku 6000197536050 --item_id 6000197536049 --upc 4549659075 --stores @stores.txt --repeat 10
