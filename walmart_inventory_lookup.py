@@ -44,25 +44,25 @@ def run_inventory_lookup(stores_id, item_id, sku, upc):
 	alert_stock(json.loads(r.text), item_id)
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Checks Walmart stocks for a given product in several stores', fromfile_prefix_chars='@')
-    parser.add_argument('--upc', help='UPC number of item', required=True)
-    parser.add_argument('--sku', help='sku number of item', default='')
-    parser.add_argument('--item_id', help='ID number of item', default='')
-    parser.add_argument('--stores', help='space separated store ids from which to check stock. Ex: --stores 3007 3008', nargs='+', required=True)
-    parser.add_argument('--repeat', type=int, help='repeats the query every X minute. Ex: --repeat 15', default=0)
+	parser = argparse.ArgumentParser(description='Checks Walmart stocks for a given product in several stores', fromfile_prefix_chars='@')
+	parser.add_argument('--upc', help='UPC number of item', required=True)
+	parser.add_argument('--sku', help='sku number of item', default='')
+	parser.add_argument('--item_id', help='ID number of item', default='')
+	parser.add_argument('--stores', help='space separated store ids from which to check stock. Ex: --stores 3007 3008', nargs='+', required=True)
+	parser.add_argument('--repeat', type=int, help='repeats the query every X minute. Ex: --repeat 15', default=0)
 
-    args = parser.parse_args()
+	args = parser.parse_args()
 
-    frequency = args.repeat
+	frequency = args.repeat
 
-    if frequency > 0 and frequency < MIN_QUERY_FREQUENCY:
-        frequency = MIN_QUERY_FREQUENCY
+	if frequency > 0 and frequency < MIN_QUERY_FREQUENCY:
+		frequency = MIN_QUERY_FREQUENCY
 
-    repeat = True
+	repeat = True
 
-    while repeat:
-        run_inventory_lookup(args.stores, args.item_id, args.sku, args.upc)
-        time.sleep(args.repeat*60)
-        if args.repeat == 0:
-            repeat = False
+	while repeat:
+		run_inventory_lookup(args.stores, args.item_id, args.sku, args.upc)
+		time.sleep(args.repeat*60)
+		if args.repeat == 0:
+			repeat = False
 
