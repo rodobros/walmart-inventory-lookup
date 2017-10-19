@@ -1,7 +1,6 @@
 import requests
 import json
 import argparse
-import threading
 import time
 import datetime
 
@@ -44,27 +43,26 @@ def run_inventory_lookup(stores_id, item_id, sku, upc):
 	r = client.post(URL, params = payload, headers = headers)
 	alert_stock(json.loads(r.text), item_id)
 
-def run_inventory_lookup_multiple_time(stores_id, item_id, sku, upc, frequency):
-	if frequency < MIN_QUERY_FREQUENCY:
-		frequency = MIN_QUERY_FREQUENCY
-	run_inventory_lookup(stores_id, item_id, sku, upc)
-	t = threading.Timer(frequency*60, run_inventory_lookup_multiple_time, [stores_id, item_id, sku, upc, frequency])
-	t.daemon=True
-	t.start()
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Checks Walmart stocks for a given product in several stores', fromfile_prefix_chars='@')
+    parser.add_argument('--upc', help='UPC number of item', required=True)
+    parser.add_argument('--sku', help='sku number of item', default='')
+    parser.add_argument('--item_id', help='ID number of item', default='')
+    parser.add_argument('--stores', help='space separated store ids from which to check stock. Ex: --stores 3007 3008', nargs='+', required=True)
+    parser.add_argument('--repeat', type=int, help='repeats the query every X minute. Ex: --repeat 15', default=0)
 
+    args = parser.parse_args()
 
-parser = argparse.ArgumentParser(description='Checks Walmart stocks for a given product in several stores', fromfile_prefix_chars='@')
-parser.add_argument('--upc', help='UPC number of item', required=True)
-parser.add_argument('--sku', help='sku number of item', default='')
-parser.add_argument('--item_id', help='ID number of item', default='')
-parser.add_argument('--stores', help='space separated store ids from which to check stock. Ex: --stores 3007 3008', nargs='+', required=True)
-parser.add_argument('--repeat', type=int, help='repeats the query every X minute. Ex: --repeat 15', default=0)
+    frequency = args.repeat
 
-args = parser.parse_args()
+    if frequency > 0 and frequency < MIN_QUERY_FREQUENCY:
+        frequency = MIN_QUERY_FREQUENCY
 
-if args.repeat == 0:
-	run_inventory_lookup(args.stores, args.item_id, args.sku, args.upc)
-else:
-	run_inventory_lookup_multiple_time(args.stores, args.item_id, args.sku, args.upc, args.repeat)
-	while True:
-		pass
+    repeat = True
+
+    while repeat:
+        run_inventory_lookup(args.stores, args.item_id, args.sku, args.upc)
+        time.sleep(args.repeat*60)
+        if args.repeat == 0:
+            repeat = False
+
