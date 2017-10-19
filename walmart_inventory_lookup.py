@@ -53,7 +53,13 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    frequency = args.repeat
+
+    if frequency > 0 and frequency < MIN_QUERY_FREQUENCY:
+        frequency = MIN_QUERY_FREQUENCY
+
     repeat = True
+
     while repeat:
         run_inventory_lookup(args.stores, args.item_id, args.sku, args.upc)
         time.sleep(args.repeat*60)
